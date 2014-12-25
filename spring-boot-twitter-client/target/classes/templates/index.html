@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Client Application</title>
+	
+	<script src="//code.jquery.com/jquery-1.11.0.min.js"></script>
+	<script type="text/javascript">
+	//<![CDATA[
+	           
+	    function displayTweets(o) {
+	    		    	
+	    	var tweets = "";
+			
+			for (var i = 0; i < o.data.length; i++) {
+				
+				tweets += o.data[i].text + " *** ";
+			}
+			
+			alert(tweets);
+	    }
+	    
+	    function displayFriends(o) {
+	    	
+	    	var friends = "";
+			
+			for (var i = 0; i < o.data.length; i++) {
+				
+				friends += o.data[i].name + " *** ";
+			}
+			
+			alert(friends);
+	    }
+	    
+		function displayTwitterProfile(o) {
+	    			
+			alert(o.data.twitterName + " *** " + o.data.twitterId);
+	    }
+		
+		function getTweets() {
+			
+			$.ajax({
+				
+				type: "POST",
+		        url: "http://localhost:8080/getMyTweets?function=displayTweets",
+		       	dataType: "jsonp"				
+			});
+		}
+		
+		function getTwitterFriends() {
+			
+			$.ajax({
+				
+				type: "POST",
+		        url: "http://localhost:8080/getMyTwitterFriends?function=displayFriends",
+		       	dataType: "jsonp"				
+			});
+		}
+		
+		function getTwitterProfile() {
+			
+			$.ajax({
+				
+				type: "POST",
+		        url: "http://localhost:8080/getMyTwitterProfile?function=displayTwitterProfile",
+		       	dataType: "jsonp"				
+			});
+		}
+		
+		function login() {
+			
+			$.ajax({
+				
+				type: "POST",
+		        url: "http://localhost:8080/clientLogin?function=displayLoginStatus&username=" + $("#username").val() + "&password=" + $("#password").val(),
+		       	dataType: "jsonp"				
+			});
+		}
+		
+		function displayLoginStatus(o) {
+			
+			if (o.data.indexOf("OK") >= 0) {
+												
+				$("#name").html(o.data.split("_")[1]);
+				$("#loginForm").css("display", "none");
+				$("#logoutForm").css("display", "block");
+			
+			} else {
+				
+				alert(o.data);
+				$("#username").focus();
+			}
+			
+			$("#username").val("");
+			$("#password").val("");
+		}
+		
+		function logout() {
+			
+			$.ajax({
+				
+				type: "POST",
+		        url: "http://localhost:8080/clientLogout?function=displayLogoutStatus",
+		       	dataType: "jsonp"				
+			});
+		}
+		
+		function displayLogoutStatus(o) {
+			
+			if (o.data == "OK") {
+				
+				$("#name").html("");
+				$("#loginForm").css("display", "block");
+				$("#logoutForm").css("display", "none");
+			}
+		}
+			    		
+		$(document).ready(function() {
+			
+			$("#button1").click(function(){	
+				getTweets();
+			});
+			
+			$("#button2").click(function(){
+				getTwitterFriends();
+			});
+			
+			$("#button3").click(function(){			
+				getTwitterProfile();
+			});
+			
+			getTweets();
+			
+			$("#submitLogin").click(function(){
+				login();
+			});
+			
+			$("#logout").click(function(){
+				logout();
+			});
+			
+			$(document).on("keydown", function(e){
+
+				if (e.keyCode == 13) {
+					
+					login();
+				}
+			});
+		});
+		
+	//]]>	
+	</script>
+</head>
+<body>
+	
+	<h3>Hello <span id="name"></span></h3>
+	
+	<br/><br/>
+	
+	<button id="button1">Get Tweets</button>
+	
+	<br/><br/>
+	
+	<button id="button2">Get Twitter Fiends</button>
+	
+	<br/><br/>
+	
+	<button id="button3">Get Twitter Profile</button>
+	
+	<br/><br/><br/><br/>
+	
+	<div id="loginForm">
+		<input type="text" id="username" placeholder="username" autofocus="autofocus" />
+		<input type="password" id="password" placeholder="password" />
+		<button id="submitLogin">Log In</button>
+	</div>
+	
+	<div id="logoutForm" style="display: none;">
+		<button id="logout">Log Out</button>
+	</div>
+	
+</body>
+</html>

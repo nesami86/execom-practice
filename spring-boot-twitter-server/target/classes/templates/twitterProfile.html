@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+	<head>
+		<title>Hello Twitter</title>
+	</head>
+	<body>
+		<h3>Hello, <span th:text="${twitterProfile}">Some User</span>!</h3>
+		
+		<h4>These are your friends:</h4>
+		
+		<ul>
+			<li th:each="friend:${friends}" th:text="${friend.name}">Friend</li>
+		</ul>
+		
+		<h4>These are your tweets:</h4>
+		<div th:each="tweet:${tweets}">
+			<span th:text="${tweet.date}"></span><br/>
+			<span th:text="${tweet.text}"></span><br/>
+			<span>******************************</span>
+		</div>
+		
+		<br/>
+		
+		<form action="/profile" method="post">
+			<p><button type="submit">Switch</button> to your application profile.</p>
+		</form>
+		
+		<br/>
+		
+		<form action="/signout" method="post">
+			<button type="submit">Log out</button>
+		</form>		
+	</body>
+</html>

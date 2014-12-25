@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Profile</title>
+    </head>
+    <body>
+        <h1 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h1>
+        
+        <table>
+        	<tr><th colspan="2">Your data</th></tr>
+        	<tr><td>First name: </td><td th:text="${user.name}"></td></tr>
+        	<tr><td>Last name: </td><td th:text="${user.surname}"></td></tr>
+        	<tr><td>E-mail: </td><td th:text="${user.email}"></td></tr>
+        </table>
+        
+        <br/>
+        
+        <div th:if="${isConnectedWithTwitter == false}">
+        	<form action="/connect/twitter" method="post">
+        		<input type="submit" value="Connect to twitter" />
+       	 	</form>
+        </div>
+        
+       	<div th:if="${isConnectedWithTwitter == true}">
+       		<form action="/" method="get">
+        		<p><button type="submit">Switch</button> to your twitter profile.</p>
+       		</form>
+     	</div>
+     	
+     	<br/><br/>
+     	        
+        <form th:action="@{/logout}" method="post">
+            <input type="submit" value="Sign Out"/>
+        </form>
+    </body>
+</html>

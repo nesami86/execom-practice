@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+    <head>
+        <title>Server application</title>
+    </head>
+    <body>
+        <h1>Welcome!</h1>
+
+		<div th:if="${hasLoggedIn == 0}">
+        	<p>Click <a th:href="@{/profile}">here</a> to log in.</p>
+        
+       		<p>Click <a th:href="@{/registerForm}">here</a> to register.</p>
+        </div>
+        
+        <div th:if="${hasLoggedIn == 1}">
+        	<p>Click <a th:href="@{/profile}">here</a> to go to your profile.</p>
+        </div>
+    </body>
+</html>

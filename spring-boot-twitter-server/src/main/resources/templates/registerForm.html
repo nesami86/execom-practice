@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+<head>
+   	<title>Registration</title>
+</head>
+<body>
+	<form action="#" th:action="@{/register}" th:object="${user}" method="post">
+    	<table>
+        	<tr><th>Register</th></tr>
+            <tr><td>First Name:</td><td><input type="text" th:field="*{name}" autofocus="autofocus" /></td><td th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Name Error</td></tr>
+            <tr><td>Last Name:</td><td><input type="text" th:field="*{surname}" /></td><td th:if="${#fields.hasErrors('surname')}" th:errors="*{surname}"></td></tr>
+            <tr><td>E-mail:</td><td><input type="text" th:field="*{email}" /></td><td th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></td></tr>
+   			<tr><td>Username:</td><td><input type="text" th:field="*{username}" /></td><td><span th:if="${#fields.hasErrors('username')}" th:errors="*{username}"></span><span th:text="${error}"></span></td></tr>
+            <tr><td>Password:</td><td><input type="password" th:field="*{password}" /></td><td th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></td></tr>
+            <tr><td colspan="2"><button type="submit">Submit</button></td></tr>
+        </table>
+    </form>
+    
+    <br/><br/>
+    
+    <a href="/">&lt;- back</a>        
+</body>
+</html>
