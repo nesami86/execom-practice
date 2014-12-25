@@ -86,6 +86,7 @@ public class WebControllerTest {
 		reset(twitter, userRepository, validations, user, bindingResult, model);
 		
         User user = new User();
+        user.setUsername("nesa");
         Authentication auth = new UsernamePasswordAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(auth);
     }
@@ -125,6 +126,7 @@ public class WebControllerTest {
 	@Test
 	public void helloTest4() {
 		
+		when(userRepository.findByUsername("nesa")).thenReturn(user);
 		when(twitter.isAuthorized()).thenReturn(true);	
 		when(twitter.userOperations()).thenReturn(userOperations);
 		when(userOperations.getProfileId()).thenReturn((long) 1);
@@ -150,7 +152,7 @@ public class WebControllerTest {
 	}
 	
 	@Test
-	public void profileTest1() {
+	public void profileTest() {
 			
 		when(twitter.isAuthorized()).thenReturn(true);	
 		webControllerInstance.profile(model);

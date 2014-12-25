@@ -1,21 +1,26 @@
 package hello;
 
+import hello.beans.Tweet;
+import hello.beans.TwitterData;
 import hello.beans.User;
 import hello.utils.TwitterDataRepository;
 import hello.utils.UserDetailsServiceImpl;
 import hello.utils.UserRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -25,7 +30,7 @@ import com.fasterxml.jackson.databind.util.JSONPObject;
 /**
  * Responds from a client application calls
  */
-@RestController
+@Controller
 public class RestfulController extends WebMvcConfigurerAdapter {
 
 	@Autowired
@@ -83,9 +88,22 @@ public class RestfulController extends WebMvcConfigurerAdapter {
     }
 	
 	@RequestMapping("/getMyTweets")
-    public Object getMyTwitts() {
+    public List<Tweet> getMyTwitts() {
     	
-		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getTweets();
+		SecurityContext securityContext = SecurityContextHolder.getContext();
+    	Authentication authentication = securityContext.getAuthentication();
+    	String username = authentication.getName();
+    	User user = userRepository.findByUsername(username);
+    	long twitterId = user.getTwitterId();
+    	TwitterData twitterData = twitterDataRepository.findByTwitterId(twitterId);
+    	List<Tweet> tweets = twitterData.getTweets();
+		
+//		Tweet tweet = new Tweet();
+//		tweet.setText("First Tweet");
+//		List<Tweet> tweets = new ArrayList<Tweet>();
+//		tweets.add(tweet);
+		
+		return tweets;
     }
     
     @RequestMapping("/getMyTwitterFriends")
@@ -99,4 +117,26 @@ public class RestfulController extends WebMvcConfigurerAdapter {
     	
 		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId());	
 	}
+    
+    @RequestMapping("/test")
+    public String test() {
+    	    	
+    	return "Working";
+    }
+    
+    @RequestMapping("/test2")
+    public @ResponseBody User test2() {
+    	
+    	User user = new User();
+    	user.setUsername("nesa");
+    	user.setEmail("nesami86@yahoo.com");
+    	user.setId(1);
+    	user.setPassword("nesa");
+    	user.setSurname("milovanov");
+    	user.setName("nesa");
+    	user.setTwitterId(1);
+    	user.setTwitterName("nesa");
+    	
+    	return user;
+    }
 }
