@@ -83,32 +83,20 @@ public class RestfulController extends WebMvcConfigurerAdapter {
     }
 	
 	@RequestMapping("/getMyTweets")
-    public String getMyTwitts(@RequestParam("function") String callBack) throws JsonProcessingException {
+    public Object getMyTwitts(@RequestParam("function") String callBack) throws JsonProcessingException {
     	
-		ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("data", twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getTweets());
-		
-		return objectMapper.writeValueAsString(new JSONPObject(callBack, map));
+		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getTweets();
     }
     
     @RequestMapping("/getMyTwitterFriends")
-    public String getMyTwitterFriends(@RequestParam("function") String callBack) throws JsonProcessingException {
+    public Object getMyTwitterFriends(@RequestParam("function") String callBack) throws JsonProcessingException {
     	
-    	ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("data", twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getFriends());	
-   
-		return objectMapper.writeValueAsString(new JSONPObject(callBack, map));
+		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getFriends();	
     }
     
     @RequestMapping("/getMyTwitterProfile")
-    public String getMyTwitterProfile(@RequestParam("function") String callBack) throws JsonProcessingException {
+    public Object getMyTwitterProfile(@RequestParam("function") String callBack) throws JsonProcessingException {
     	
-    	ObjectMapper objectMapper = new ObjectMapper();
-		Map<String, Object> map = new HashMap<String, Object>();
-		map.put("data", twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()));	
-   
-		return objectMapper.writeValueAsString(new JSONPObject(callBack, map));
+		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId());	
 	}
 }
