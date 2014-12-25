@@ -83,19 +83,19 @@ public class RestfulController extends WebMvcConfigurerAdapter {
     }
 	
 	@RequestMapping("/getMyTweets")
-    public Object getMyTwitts(@RequestParam("function") String callBack) throws JsonProcessingException {
+    public Object getMyTwitts() {
     	
 		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getTweets();
     }
     
     @RequestMapping("/getMyTwitterFriends")
-    public Object getMyTwitterFriends(@RequestParam("function") String callBack) throws JsonProcessingException {
+    public Object getMyTwitterFriends() {
     	
 		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getFriends();	
     }
     
     @RequestMapping("/getMyTwitterProfile")
-    public Object getMyTwitterProfile(@RequestParam("function") String callBack) throws JsonProcessingException {
+    public Object getMyTwitterProfile() {
     	
 		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId());	
 	}
