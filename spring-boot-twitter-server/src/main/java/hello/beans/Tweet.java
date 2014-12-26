@@ -13,23 +13,23 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="tweets")
+@Table(name = "tweets")
 public class Tweet {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long tweetId;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long tweetId;
+
 	@ManyToOne
-	@JoinColumn(name="twitter_data_id")
+	@JoinColumn(name = "twitter_data_id")
 	@JsonBackReference
 	private TwitterData twitterData;
-	
+
 	private Date date;
 	private String text;
-	
+
 	public Tweet() {
-		
+
 	}
 
 	public long getId() {

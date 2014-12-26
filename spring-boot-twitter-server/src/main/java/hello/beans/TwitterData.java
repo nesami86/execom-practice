@@ -18,31 +18,29 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 @Entity
-@Table(name="twitter_data")
+@Table(name = "twitter_data")
 public class TwitterData {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long twitterDataId;
-	
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long twitterDataId;
+
 	private long twitterId;
 	private String twitterName;
-	
-	@OneToMany(cascade=CascadeType.ALL) 
-	@JoinColumn(name="twitter_data_id")
+
+	@OneToMany(cascade = CascadeType.ALL)
+	@JoinColumn(name = "twitter_data_id")
 	@JsonManagedReference
 	@OrderBy("date DESC")
 	private List<Tweet> tweets;
-	
-	@ManyToMany(fetch=FetchType.LAZY, cascade=CascadeType.ALL)
-	@JoinTable(name="twitter_data_friend", joinColumns = { 
-		@JoinColumn(name="twitter_data_id", nullable=false, updatable=false) }, inverseJoinColumns = { 
-			@JoinColumn(name="friend_id", nullable=false, updatable=false) })
+
+	@ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+	@JoinTable(name = "twitter_data_friend", joinColumns = { @JoinColumn(name = "twitter_data_id", nullable = false, updatable = false) }, inverseJoinColumns = { @JoinColumn(name = "friend_id", nullable = false, updatable = false) })
 	@JsonManagedReference
 	private List<Friend> friends;
-	
+
 	public TwitterData() {
-		
+
 	}
 
 	public long getTwitterDataId() {

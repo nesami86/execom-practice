@@ -13,21 +13,21 @@ import javax.persistence.Table;
 import com.fasterxml.jackson.annotation.JsonBackReference;
 
 @Entity
-@Table(name="friends")
+@Table(name = "friends")
 public class Friend {
 
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long friendId;
-	
-	@ManyToMany(fetch=FetchType.LAZY, mappedBy="friends")
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long friendId;
+
+	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "friends")
 	@JsonBackReference
 	private List<TwitterData> twitterData;
-	
+
 	private String name;
-		
+
 	public Friend() {
-		
+
 	}
 
 	public long getFriendId() {
@@ -37,7 +37,7 @@ public class Friend {
 	public void setId(long friendId) {
 		this.friendId = friendId;
 	}
-	
+
 	public List<TwitterData> getTwitterData() {
 		return twitterData;
 	}

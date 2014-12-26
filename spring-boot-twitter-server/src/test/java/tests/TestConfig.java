@@ -14,6 +14,7 @@ import hello.utils.Validations;
 import org.mockito.Mockito;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.Twitter;
 import org.springframework.social.twitter.api.UserOperations;
@@ -36,6 +37,11 @@ public class TestConfig {
 	@Bean
 	public UserDetailsServiceImpl userDetailsServiceImpl() {
 		return Mockito.mock(UserDetailsServiceImpl.class);			
+	}
+	
+	@Bean
+	public UserDetails userDetails() {
+		return Mockito.mock(UserDetails.class);
 	}
 	
 	@Bean

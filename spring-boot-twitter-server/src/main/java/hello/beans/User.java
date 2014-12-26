@@ -8,34 +8,46 @@ import javax.persistence.Table;
 import javax.validation.constraints.Size;
 
 @Entity
-@Table(name="users")
+@Table(name = "users")
 public class User {
-   
+
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private long id;
-	
-    @Size(min=2, max=40)
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private long id;
+
+	@Size(min = 2, max = 40)
 	private String name;
-    
-    @Size(min=2, max=40)
+
+	@Size(min = 2, max = 40)
 	private String surname;
-    
-    @Size(min=2, max=40)
+
+	@Size(min = 2, max = 40)
 	private String email;
-    
-    @Size(min=2, max=40)
+
+	@Size(min = 2, max = 40)
 	private String username;
-    
-    @Size(min=2, max=40)
+
+	@Size(min = 2, max = 40)
 	private String password;
-	
-    private long twitterId;
-    
-    private String twitterName;
-    
+
+	private long twitterId;
+
+	private String twitterName;
+
 	public User() {
-		
+
+	}
+
+	public User(long id, String name, String surname, String email, String username, String password, long twitterId, String twitterName) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.surname = surname;
+		this.email = email;
+		this.username = username;
+		this.password = password;
+		this.twitterId = twitterId;
+		this.twitterName = twitterName;
 	}
 
 	public long getId() {

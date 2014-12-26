@@ -30,6 +30,7 @@ import static org.junit.Assert.assertEquals;
 import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.reset;
 import static org.mockito.Mockito.when;
+import static org.mockito.Matchers.anyString;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {TestConfig.class, WebControllerTest.TestConfig.class})
@@ -85,7 +86,6 @@ public class WebControllerTest {
 		
 		reset(twitter, userRepository, validations, user, bindingResult, model);
 		
-        User user = new User();
         user.setUsername("nesa");
         Authentication auth = new UsernamePasswordAuthenticationToken(user,null);
         SecurityContextHolder.getContext().setAuthentication(auth);
@@ -126,7 +126,7 @@ public class WebControllerTest {
 	@Test
 	public void helloTest4() {
 		
-		when(userRepository.findByUsername("nesa")).thenReturn(user);
+		when(userRepository.findByUsername(anyString())).thenReturn(user);
 		when(twitter.isAuthorized()).thenReturn(true);	
 		when(twitter.userOperations()).thenReturn(userOperations);
 		when(userOperations.getProfileId()).thenReturn((long) 1);

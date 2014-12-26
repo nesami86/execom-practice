@@ -53,7 +53,7 @@ public class RestfulController extends WebMvcConfigurerAdapter {
 	 * @throws JsonProcessingException
 	 */
 	@RequestMapping("/clientLogin")
-	public String clientLogin(@RequestParam("function") String callBack, @RequestParam("username") String username, @RequestParam("password") String password) throws JsonProcessingException {
+	public @ResponseBody String clientLogin(@RequestParam("function") String callBack, @RequestParam("username") String username, @RequestParam("password") String password) throws JsonProcessingException {
 		
 		User user = userRepository.findByUsernameAndPassword(username, password);
 		ObjectMapper objectMapper = new ObjectMapper();
@@ -76,7 +76,7 @@ public class RestfulController extends WebMvcConfigurerAdapter {
 	}
 	
 	@RequestMapping("/clientLogout")
-    public String clientLogout(@RequestParam("function") String callBack) throws JsonProcessingException {
+    public @ResponseBody String clientLogout(@RequestParam("function") String callBack) throws JsonProcessingException {
     	
 		SecurityContextHolder.clearContext();
 		
@@ -88,55 +88,45 @@ public class RestfulController extends WebMvcConfigurerAdapter {
     }
 	
 	@RequestMapping("/getMyTweets")
-    public List<Tweet> getMyTwitts() {
+    public @ResponseBody List<Tweet> getMyTwitts() {
     	
 		SecurityContext securityContext = SecurityContextHolder.getContext();
     	Authentication authentication = securityContext.getAuthentication();
     	String username = authentication.getName();
+    	
     	User user = userRepository.findByUsername(username);
     	long twitterId = user.getTwitterId();
     	TwitterData twitterData = twitterDataRepository.findByTwitterId(twitterId);
     	List<Tweet> tweets = twitterData.getTweets();
-		
-//		Tweet tweet = new Tweet();
-//		tweet.setText("First Tweet");
-//		List<Tweet> tweets = new ArrayList<Tweet>();
-//		tweets.add(tweet);
-		
+			
 		return tweets;
     }
     
     @RequestMapping("/getMyTwitterFriends")
-    public Object getMyTwitterFriends() {
+    public @ResponseBody Object getMyTwitterFriends() {
     	
 		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getFriends();	
     }
     
     @RequestMapping("/getMyTwitterProfile")
-    public Object getMyTwitterProfile() {
+    public @ResponseBody TwitterData getMyTwitterProfile() {
     	
-		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId());	
+    	SecurityContext securityContext = SecurityContextHolder.getContext();
+    	Authentication authentication = securityContext.getAuthentication();
+    	String username = authentication.getName();
+    	
+    	User user = userRepository.findByUsername(username);
+    	long twitterId = user.getTwitterId();
+    	TwitterData twitterData = twitterDataRepository.findByTwitterId(twitterId);
+    	
+    	return twitterData;
+    	
+//		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId());	
 	}
-    
-    @RequestMapping("/test")
-    public String test() {
-    	    	
-    	return "Working";
-    }
-    
+        
     @RequestMapping("/test2")
     public @ResponseBody User test2() {
     	
-    	User user = new User();
-    	user.setUsername("nesa");
-    	user.setEmail("nesami86@yahoo.com");
-    	user.setId(1);
-    	user.setPassword("nesa");
-    	user.setSurname("milovanov");
-    	user.setName("nesa");
-    	user.setTwitterId(1);
-    	user.setTwitterName("nesa");
-    	
-    	return user;
+    	return new User(1, "Nenad", "Milovanov", "nesami86@yahoo.com", "nesa", "nesa", 1, "llnesall");
     }
 }
