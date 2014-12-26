@@ -10,20 +10,26 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "friends")
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Friend {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonProperty
 	private long friendId;
 
 	@ManyToMany(fetch = FetchType.LAZY, mappedBy = "friends")
 	@JsonBackReference
+	@JsonProperty
 	private List<TwitterData> twitterData;
 
+	@JsonProperty
 	private String name;
 
 	public Friend() {

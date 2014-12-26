@@ -131,13 +131,6 @@ public class RestfulControllerTest {
 	@Test
 	public void testGetMyTwitterProfile() throws Exception {
 		
-		try {
-			
-			assertEquals("f1({\"data\":null})", restfulController.getMyTwitterProfile("f1"));
-			
-		} catch (Exception e) {
-			
-			e.printStackTrace();
-		}
+		assertEquals("f1({\"data\":{\"twitterDataId\":0,\"twitterId\":0,\"twitterName\":null,\"tweets\":null,\"friends\":null}})", restfulController.getMyTwitterProfile("f1"));
 	}
 }

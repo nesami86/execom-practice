@@ -10,22 +10,30 @@ import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 @Entity
 @Table(name = "tweets")
+@JsonAutoDetect(getterVisibility = JsonAutoDetect.Visibility.NONE, isGetterVisibility = JsonAutoDetect.Visibility.NONE)
 public class Tweet {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
+	@JsonProperty
 	private long tweetId;
 
 	@ManyToOne
 	@JoinColumn(name = "twitter_data_id")
 	@JsonBackReference
+	@JsonProperty
 	private TwitterData twitterData;
 
+	@JsonProperty
 	private Date date;
+	
+	@JsonProperty
 	private String text;
 
 	public Tweet() {

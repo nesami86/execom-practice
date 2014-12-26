@@ -10,8 +10,6 @@ import hello.utils.Validations;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.social.connect.ConnectionRepository;
 import org.springframework.social.twitter.api.Twitter;
@@ -118,12 +116,8 @@ public class WebController extends WebMvcConfigurerAdapter {
     		
     		connectedWithTwitter = true;
     	}
-    	
-    	SecurityContext securityContext = SecurityContextHolder.getContext();
-    	Authentication authentication = securityContext.getAuthentication();
-    	String name = authentication.getName();
-    	
-    	model.addAttribute("user", userRepository.findByUsername(name));
+    	    	
+    	model.addAttribute("user", userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()));
     	model.addAttribute("isConnectedWithTwitter", connectedWithTwitter);  	   	
     	   	
     	return "profile";
