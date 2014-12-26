@@ -1,20 +1,16 @@
 package hello;
 
-import hello.beans.Tweet;
-import hello.beans.TwitterData;
 import hello.beans.User;
 import hello.utils.TwitterDataRepository;
 import hello.utils.UserDetailsServiceImpl;
 import hello.utils.UserRepository;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Controller;
@@ -88,45 +84,32 @@ public class RestfulController extends WebMvcConfigurerAdapter {
     }
 	
 	@RequestMapping("/getMyTweets")
-    public @ResponseBody List<Tweet> getMyTwitts() {
+    public @ResponseBody String getMyTwitts(@RequestParam("function") String callBack) throws JsonProcessingException {
     	
-		SecurityContext securityContext = SecurityContextHolder.getContext();
-    	Authentication authentication = securityContext.getAuthentication();
-    	String username = authentication.getName();
-    	
-    	User user = userRepository.findByUsername(username);
-    	long twitterId = user.getTwitterId();
-    	TwitterData twitterData = twitterDataRepository.findByTwitterId(twitterId);
-    	List<Tweet> tweets = twitterData.getTweets();
-			
-		return tweets;
+		ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("data", twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getTweets());
+		
+		return objectMapper.writeValueAsString(new JSONPObject(callBack, map));
     }
     
-    @RequestMapping("/getMyTwitterFriends")
-    public @ResponseBody Object getMyTwitterFriends() {
+	@RequestMapping("/getMyTwitterFriends")
+    public @ResponseBody String getMyTwitterFriends(@RequestParam("function") String callBack) throws JsonProcessingException {
     	
-		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getFriends();	
+    	ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("data", twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()).getFriends());	
+   
+		return objectMapper.writeValueAsString(new JSONPObject(callBack, map));
     }
     
     @RequestMapping("/getMyTwitterProfile")
-    public @ResponseBody TwitterData getMyTwitterProfile() {
+    public @ResponseBody String getMyTwitterProfile(@RequestParam("function") String callBack) throws JsonProcessingException {
     	
-    	SecurityContext securityContext = SecurityContextHolder.getContext();
-    	Authentication authentication = securityContext.getAuthentication();
-    	String username = authentication.getName();
-    	
-    	User user = userRepository.findByUsername(username);
-    	long twitterId = user.getTwitterId();
-    	TwitterData twitterData = twitterDataRepository.findByTwitterId(twitterId);
-    	
-    	return twitterData;
-    	
-//		return twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId());	
+    	ObjectMapper objectMapper = new ObjectMapper();
+		Map<String, Object> map = new HashMap<String, Object>();
+		map.put("data", twitterDataRepository.findByTwitterId(userRepository.findByUsername(SecurityContextHolder.getContext().getAuthentication().getName()).getTwitterId()));	
+   
+		return objectMapper.writeValueAsString(new JSONPObject(callBack, map));
 	}
-        
-    @RequestMapping("/test2")
-    public @ResponseBody User test2() {
-    	
-    	return new User(1, "Nenad", "Milovanov", "nesami86@yahoo.com", "nesa", "nesa", 1, "llnesall");
-    }
 }

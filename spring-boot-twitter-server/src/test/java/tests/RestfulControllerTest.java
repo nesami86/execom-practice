@@ -8,11 +8,7 @@ import hello.utils.TwitterDataRepository;
 import hello.utils.UserDetailsServiceImpl;
 import hello.utils.UserRepository;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import org.junit.Before;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +32,6 @@ import static org.mockito.Matchers.anyString;
 import static org.mockito.Mockito.when;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -101,9 +96,7 @@ public class RestfulControllerTest {
 
 	@Test
 	public void testClientLogin1() throws Exception {
-		
-//		this.mockMvc.perform(get("/clientLogin?function=function1&username=nesa&password=nesa")).andExpect(status().isOk());
-		
+			
 		when(userRepository.findByUsernameAndPassword("nesa", "nesa")).thenReturn(user);
 		when(userDetailsService.loadUserByUsername("nesa")).thenReturn(userDetails);
 		assertEquals("f1({\"data\":\"OK_null\"})", restfulController.clientLogin("f1", "nesa", "nesa"));
@@ -124,38 +117,27 @@ public class RestfulControllerTest {
 	
 	@Test
 	public void testGetMyTwitts() throws Exception {
-
-		List<Tweet> tweets = new ArrayList<Tweet>();
-		Tweet t = new Tweet();
-		t.setText("Test tweet");
-		tweets.add(t);
-
-		when(twitterData.getTweets()).thenReturn(tweets);
-
-		this.mockMvc.perform(get("/getMyTweets"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$[0].text").value("Test tweet"));
+	
+		when(twitterData.getTweets()).thenReturn(null);
+		assertEquals("f1({\"data\":null})", restfulController.getMyTwitts("f1"));
 	}
 	
 	@Test
 	public void testGetMyTwitterFriends() throws Exception {
 		
-		this.mockMvc.perform(get("/getMyTwitterFriends")).andExpect(status().isOk());
+		assertEquals("f1({\"data\":[]})", restfulController.getMyTwitterFriends("f1"));
 	}
 	
-	@Ignore
 	@Test
 	public void testGetMyTwitterProfile() throws Exception {
 		
-		this.mockMvc.perform(get("/getMyTwitterProfile")).andExpect(status().isOk());
-	}
-
-	@Test
-	public void testTest2() throws Exception {
-
-		this.mockMvc.perform(get("/test2"))
-			.andExpect(status().isOk())
-			.andExpect(jsonPath("$.name").value("Nenad"))
-			.andExpect(jsonPath("$.surname").value("Milovanov"));
+		try {
+			
+			assertEquals("f1({\"data\":null})", restfulController.getMyTwitterProfile("f1"));
+			
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+		}
 	}
 }
